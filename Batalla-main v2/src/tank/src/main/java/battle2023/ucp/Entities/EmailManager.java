@@ -18,6 +18,9 @@ public class EmailManager {
     }
 
     public Email createEmail(String subject, String content, Contact sender, List<Contact> recipients) {
+        if (sender == null) {
+            throw new IllegalArgumentException("Sender cannot be null");
+        }
         Email email = new Email(subject, content, sender, recipients);
         for (Contact recipient : recipients) {
             recipientMailbox(recipient).addReceivedEmail(email);

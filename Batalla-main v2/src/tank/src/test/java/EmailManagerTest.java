@@ -1,9 +1,8 @@
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 
 import java.util.ArrayList;
@@ -47,4 +46,14 @@ public class EmailManagerTest {
         assertEquals(1, sentEmails.size());
         assertEquals(email, sentEmails.get(0));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateEmailWithoutSender() {
+        Contact recipient = emailManager.createContact("Recipient Name", "recipient@example.com");
+        emailManager.createEmail("Subject", "Content", null, List.of(recipient));
+    }
+
+    
+
+
 }

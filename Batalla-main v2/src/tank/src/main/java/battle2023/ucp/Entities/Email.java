@@ -31,6 +31,8 @@ public class Email {
     public List<Contact> getRecipients() {
         return recipients;
     }
+
+    
 }
     
 
