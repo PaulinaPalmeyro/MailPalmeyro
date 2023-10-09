@@ -1,6 +1,7 @@
 package battle2023.ucp.Entities;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class EmailManager {
     private List<Contact> contacts;
@@ -18,16 +19,24 @@ public class EmailManager {
     }
 
     public Email createEmail(String subject, String content, Contact sender, List<Contact> recipients) {
-        if (sender == null) {
-            throw new IllegalArgumentException("Sender cannot be null");
-        }
-        Email email = new Email(subject, content, sender, recipients);
-        for (Contact recipient : recipients) {
-            recipientMailbox(recipient).addReceivedEmail(email);
-        }
-        senderMailbox(sender).addSentEmail(email);
-        return email;
+    if (sender == null) {
+        throw new IllegalArgumentException("Sender cannot be null");
     }
+    
+    // Create a separate email object for each recipient
+    for (Contact recipient : recipients) {
+        Email email = new Email(subject, content, sender, Collections.singletonList(recipient)); // Create a separate email for each recipient
+
+        // Add the email to the sender's mailbox
+        senderMailbox(sender).addSentEmail(email);
+
+        // Add the email to the recipient's mailbox
+        recipientMailbox(recipient).addReceivedEmail(email);
+    }
+
+    return null; // You might want to change this return statement depending on your use case.
+}
+
 
     public Mailbox senderMailbox(Contact sender) {
         for (Mailbox mailbox : mailboxes) {
